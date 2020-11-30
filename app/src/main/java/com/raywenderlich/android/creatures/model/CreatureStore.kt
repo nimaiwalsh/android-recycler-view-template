@@ -63,6 +63,8 @@ object CreatureStore {
     Log.v(TAG, "Found ${foods.size} food items")
   }
 
+  fun getFavouriteCreatures(context: Context): List<Creature>? =  Favorites.getFavorites(context)?.mapNotNull { getCreatureById(it) }
+
   fun getCreatures() = creatures
 
   fun getCreatureById(id: Int) = creatures.firstOrNull { it.id == id }
