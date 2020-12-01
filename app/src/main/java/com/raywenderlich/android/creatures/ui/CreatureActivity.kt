@@ -33,8 +33,10 @@ package com.raywenderlich.android.creatures.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.model.Favorites
 import com.raywenderlich.android.creatures.model.Creature
@@ -44,6 +46,8 @@ import kotlinx.android.synthetic.main.activity_creature.*
 class CreatureActivity : AppCompatActivity() {
 
   private lateinit var creature: Creature
+  // HORIZONTAL RECYCLER VIEW
+  private val adapter = FoodAdapter(mutableListOf())
 
   companion object {
     private const val EXTRA_CREATURE_ID = "EXTRA_CREATURE_ID"
@@ -63,6 +67,7 @@ class CreatureActivity : AppCompatActivity() {
     setupTitle()
     setupViews()
     setupFavoriteButton()
+    setupFoods()
   }
 
   private fun setupCreature() {
@@ -109,5 +114,13 @@ class CreatureActivity : AppCompatActivity() {
         Favorites.addFavorite(creature, this)
       }
     }
+  }
+
+  private fun setupFoods() {
+    // HORIZONTAL RECYCLER VIEW
+    foodRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    foodRecyclerView.adapter = adapter
+    val foods = CreatureStore.getCreatureFoods(creature)
+    adapter.updateFoods(foods)
   }
 }
