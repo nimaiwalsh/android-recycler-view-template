@@ -61,7 +61,18 @@ class  AllFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    creatureRecyclerView.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
+    // SET THE SPAN-SIZE ON THE GRID LAYOUT MANAGER
+    // 1. Span size of 3,
+    // 2. Every 7th Item spans the entire length of the grid
+    val layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+
+    layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+      override fun getSpanSize(position: Int): Int {
+        return if ((position + 1) % 7 == 0) 3 else 1
+      }
+    }
+
+    creatureRecyclerView.layoutManager = layoutManager
     creatureRecyclerView.adapter = adapter
   }
 }
