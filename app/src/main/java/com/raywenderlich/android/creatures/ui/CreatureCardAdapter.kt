@@ -46,7 +46,7 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
             Palette.from(image).generate { palette ->
                 palette?.let {
                     val backgroundColor = it.getDominantColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                    itemView.creatureCard.setBackgroundColor(backgroundColor)
+                    itemView.creatureCard.setCardBackgroundColor(backgroundColor)
                     itemView.nameHolder.setBackgroundColor(backgroundColor)
                     val textColor = if (isColorDark(backgroundColor)) Color.WHITE else Color.BLACK
                     itemView.fullName.setTextColor(textColor)
