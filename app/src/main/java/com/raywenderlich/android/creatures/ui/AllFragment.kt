@@ -37,6 +37,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.model.Creature
 import com.raywenderlich.android.creatures.model.CreatureStore
@@ -61,16 +62,8 @@ class  AllFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // SET THE SPAN-SIZE ON THE GRID LAYOUT MANAGER
-    // 1. Span size of 3,
-    // 2. Every 7th Item spans the entire length of the grid
-    val layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
-
-    layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-      override fun getSpanSize(position: Int): Int {
-        return if ((position + 1) % 7 == 0) 3 else 1
-      }
-    }
+    // SET THE SPAN-SIZE ON THE STRAGGERED GRID LAYOUT MANAGER - Conforms to the list item size, in  this case the list item name
+    val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
     creatureRecyclerView.layoutManager = layoutManager
     creatureRecyclerView.adapter = adapter
