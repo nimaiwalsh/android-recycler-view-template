@@ -31,10 +31,8 @@
 package com.raywenderlich.android.creatures.ui
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -44,28 +42,61 @@ import com.raywenderlich.android.creatures.model.CreatureStore
 import kotlinx.android.synthetic.main.fragment_all.*
 
 
-class  AllFragment : Fragment() {
+class AllFragment : Fragment() {
 
-  // Can user CreatureAdapter or CreatureWithFoodsAdapter
-  private val adapter = CreatureCardAdapter(CreatureStore.getCreatures().toMutableList())
+    // Can user CreatureAdapter or CreatureWithFoodsAdapter
+    private val adapter = CreatureCardAdapter(CreatureStore.getCreatures().toMutableList())
+    private lateinit var layoutManager: StaggeredGridLayoutManager
 
-  companion object {
-    fun newInstance(): AllFragment {
-      return AllFragment()
+    companion object {
+        fun newInstance(): AllFragment {
+            return AllFragment()
+        }
     }
-  }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    return inflater.inflate(R.layout.fragment_all, container, false)
-  }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_all, menu)
+    }
 
-    // SET THE SPAN-SIZE ON THE STRAGGERED GRID LAYOUT MANAGER - Conforms to the list item size, in  this case the list item name
-    val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return inflater.inflate(R.layout.fragment_all, container, false)
+    }
 
-    creatureRecyclerView.layoutManager = layoutManager
-    creatureRecyclerView.adapter = adapter
-  }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // SET THE SPAN-SIZE ON THE STRAGGERED GRID LAYOUT MANAGER - Conforms to the list item size, in  this case the list item name
+        layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        creatureRecyclerView.layoutManager = layoutManager
+        creatureRecyclerView.adapter = adapter
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_span_1 -> {
+                showListView()
+                return true
+            }
+            R.id.action_span_2 -> {
+                showGridView()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showListView() {
+        layoutManager.spanCount = 1
+    }
+
+    private fun showGridView() {
+        layoutManager.spanCount = 2
+    }
 }

@@ -5,8 +5,4 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/card_corner_radius</item>
     </style>
-
-    <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
-        <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
-    </style>
 </resources>
