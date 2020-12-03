@@ -110,6 +110,17 @@ class AllFragment : Fragment() {
         listItemDecorator = SpacingItemDecoration(1, spacing.toInt())
         gridItemDecorator = SpacingItemDecoration(2, spacing.toInt())
         creatureRecyclerView.addItemDecoration(gridItemDecorator)
+
+        creatureRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                adapter.scrollDirection = if (dy > 0) {
+                    CreatureCardAdapter.ScrollDirection.DOWN
+                } else {
+                    CreatureCardAdapter.ScrollDirection.UP
+                }
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

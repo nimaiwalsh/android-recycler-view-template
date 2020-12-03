@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,6 @@ import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.app.Constants
 import com.raywenderlich.android.creatures.app.inflate
 import com.raywenderlich.android.creatures.model.Creature
-import kotlinx.android.synthetic.main.list_item_creature_card.view.*
 import kotlinx.android.synthetic.main.list_item_creature_card.view.creatureCard
 import kotlinx.android.synthetic.main.list_item_creature_card.view.creatureImage
 import kotlinx.android.synthetic.main.list_item_creature_card.view.fullName
@@ -26,9 +26,16 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
         JUPITER, OTHER
     }
 
+    enum class ScrollDirection {
+        UP, DOWN
+    }
+
+    var scrollDirection = ScrollDirection.DOWN
+
     var jupiterSpanSize = 2
 
-    class ViewHolder (itemView: View) : View.OnClickListener, RecyclerView.ViewHolder(itemView) {
+    // Inner class to access variables in the outter class: In this case scroll direction
+    inner class ViewHolder (itemView: View) : View.OnClickListener, RecyclerView.ViewHolder(itemView) {
         private lateinit var creature: Creature
 
         init {
@@ -43,6 +50,7 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
             itemView.creatureImage.setImageResource(imageResource)
             itemView.fullName.text = creature.fullName
             setBackgroundColors(context, imageResource)
+            animateView(itemView)
         }
 
         override fun onClick(view: View?) {
@@ -67,6 +75,14 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
                         itemView.slogan.setTextColor(textColor)
                     }
                 }
+            }
+        }
+
+        private fun animateView(viewToAnimate: View) {
+            if (viewToAnimate.animation == null) {
+                val animId = if (scrollDirection == ScrollDirection.DOWN) R.anim.slide_from_bottom else R.anim.slide_from_top
+                val animation = AnimationUtils.loadAnimation(viewToAnimate.context, animId)
+                viewToAnimate.animation = animation
             }
         }
 
