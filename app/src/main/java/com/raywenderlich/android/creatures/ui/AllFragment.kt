@@ -100,9 +100,9 @@ class AllFragment : Fragment() {
         creatureRecyclerView.layoutManager = layoutManager
         creatureRecyclerView.adapter = adapter
 
-        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.creature_card_grid_layout_margin)
-        listItemDecorator = SpacingItemDecoration(1, spacingInPixels)
-        gridItemDecorator = SpacingItemDecoration(2, spacingInPixels)
+        val spacing = resources.getDimension(R.dimen.creature_card_grid_layout_margin)
+        listItemDecorator = SpacingItemDecoration(1, spacing.toInt())
+        gridItemDecorator = SpacingItemDecoration(2, spacing.toInt())
         creatureRecyclerView.addItemDecoration(gridItemDecorator)
     }
 
