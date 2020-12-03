@@ -33,6 +33,7 @@ package com.raywenderlich.android.creatures.ui
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.raywenderlich.android.creatures.R
@@ -44,8 +45,7 @@ class AllFragment : Fragment() {
 
     // Can user CreatureAdapter or CreatureWithFoodsAdapter
     private val adapter = CreatureCardAdapter(CreatureStore.getCreatures().toMutableList())
-    private lateinit var layoutManager: StaggeredGridLayoutManager
-
+    private lateinit var layoutManager: GridLayoutManager
     private lateinit var listItemDecorator: SpacingItemDecoration
     private lateinit var gridItemDecorator: SpacingItemDecoration
     private lateinit var listMenuItem: MenuItem
@@ -95,7 +95,13 @@ class AllFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return (adapter.spanSizeAtPosition(position))
+            }
+        }
 
         creatureRecyclerView.layoutManager = layoutManager
         creatureRecyclerView.adapter = adapter
@@ -124,6 +130,7 @@ class AllFragment : Fragment() {
 
     private fun updateRecyclerView(spanCount: Int, addItemDecoration: SpacingItemDecoration, removeItemDecoration: SpacingItemDecoration) {
         layoutManager.spanCount = spanCount
+        adapter.jupiterSpanSize = spanCount
         creatureRecyclerView.removeItemDecoration(removeItemDecoration)
         creatureRecyclerView.addItemDecoration(addItemDecoration)
     }
