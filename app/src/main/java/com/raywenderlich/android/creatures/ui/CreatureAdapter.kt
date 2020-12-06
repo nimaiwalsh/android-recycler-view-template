@@ -2,6 +2,7 @@ package com.raywenderlich.android.creatures.ui
 
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.app.inflate
@@ -24,6 +25,7 @@ class CreatureAdapter(private val creatures: MutableList<Creature>) : RecyclerVi
             itemView.creatureImage.setImageResource(context.resources.getIdentifier(creature.uri, null, context.packageName))
             itemView.fullName.text = creature.fullName
             itemView.nickName.text = creature.nickname
+            animateView(itemView)
         }
 
         override fun onClick(view: View?) {
@@ -31,6 +33,14 @@ class CreatureAdapter(private val creatures: MutableList<Creature>) : RecyclerVi
                 val context = it.context
                 val intent = CreatureActivity.newIntent(context, creature.id)
                 context.startActivity(intent)
+            }
+        }
+
+        private fun animateView(viewToAnimate: View) {
+            if (viewToAnimate.animation == null) {
+                val animId = R.anim.scale
+                val animation = AnimationUtils.loadAnimation(viewToAnimate.context, animId)
+                viewToAnimate.animation = animation
             }
         }
     }
@@ -51,5 +61,4 @@ class CreatureAdapter(private val creatures: MutableList<Creature>) : RecyclerVi
         this.creatures.addAll(creatures)
         notifyDataSetChanged()
     }
-
 }
