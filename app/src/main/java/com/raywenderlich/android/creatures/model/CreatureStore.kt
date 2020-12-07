@@ -68,6 +68,22 @@ object CreatureStore {
   fun getCreatureFoods(creature: Creature): List<Food> =
           creature.foods.mapNotNull { getFoodById(it) }
 
+  fun getFavouriteComposites(context: Context): List<CompositeItem>? {
+    val favouritesByPlanet = getFavouriteCreatures(context)?.sortedBy {  it.planet }
+    val planets = favouritesByPlanet?.map {  it.planet }?.distinct()
+    val composites = mutableListOf<CompositeItem>()
+
+    planets?.let {
+      for (planet in planets) {
+        composites.add(CompositeItem.withHeader(Header(planet)))
+        val favouritesForPlanet = favouritesByPlanet.filter { it.planet == planet }.map { CompositeItem.withCreature(it) }
+        composites.addAll(favouritesForPlanet)
+      }
+    }
+
+    return composites
+  }
+
   fun getCreatures() = creatures
 
   fun getCreatureById(id: Int) = creatures.firstOrNull { it.id == id }
