@@ -65,6 +65,11 @@ class MainActivity : AppCompatActivity() {
         viewPager.setCurrentItem(1, false)
         return@OnNavigationItemSelectedListener true
       }
+      R.id.navigation_list -> {
+        title = getString(R.string.title_list)
+        viewPager.setCurrentItem(2, false)
+        return@OnNavigationItemSelectedListener true
+      }
     }
     false
   }
@@ -76,10 +81,13 @@ class MainActivity : AppCompatActivity() {
         if (position == 1) {
           return FavoritesFragment.newInstance()
         }
+        if (position == 2) {
+          return ListFragment.newInstance()
+        }
         return AllFragment.newInstance()
       }
 
-      override fun getCount() = 2
+      override fun getCount() = 3
     }
   }
 }
